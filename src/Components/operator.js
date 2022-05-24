@@ -1,6 +1,6 @@
 function Operator (props){
     return(
-        <button onClick={props.clickFunction}>{props.calculator}</button>
+        <button id='operatorSumMenu' onClick={props.clickFunction}>{props.calculator}</button>
     )
 }
 

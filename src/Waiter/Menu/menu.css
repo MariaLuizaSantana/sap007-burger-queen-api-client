@@ -1,0 +1,72 @@
+.btnMenu{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttonLogin{
+    width: 130px;
+    font-size: 13px;
+}
+
+.cardMenu{
+    background-color: white;
+    width: 250px;
+    margin: 15px;
+    border-radius: 5px;
+    border: 2px solid #400101;
+}
+
+.imgMenu{
+    height: 100px;
+    margin-top: 5px;
+    border: 2px solid #400101;
+    border-radius: 5px;
+}
+
+.productsMenu{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.productName{
+    background-color: #400101;
+    color: #FFECDC;
+    padding: 5px;
+}
+
+.productFlavor{
+    margin: 5px;
+    color: #400101;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.productPrice{
+    padding: 10px;
+    color: #400101;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+#operatorSumMenu{
+    background: #D97904;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px 0px 0px 0px;
+    border: 1px solid #400101;
+    font-size: 20px;
+    font-size: 20px;
+    font-weight: bolder;
+    color: #FFECDC;
+}
+
+.productLinePrice{
+    display: flex;
+    justify-content: space-between;
+}
+
+.productComplement{
+    color: #400101;
+    font-weight: lighter;
+    font-size: 18px;
+}

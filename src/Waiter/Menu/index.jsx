@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import WaiterTemplate from '../waiterTemplate';
 import Button from '../../Components/button';
+import OperatorSum from '../../Components/operatorsum';
+import './menu.css'
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
@@ -61,21 +63,26 @@ const WaiterMenu = () =>{
         {Boolean(error) && (
           <h1 className="msgError">{error}</h1>
         )}
-        
-        <Button title="Café da Manhã" onClick={() => setFilter('breakfast')} />
+        <div className='btnMenu'>
+        <Button title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
         <Button title="Lanches" onClick={() => setFilter('hamburguer')} />
         <Button title="Acompanhamentos" onClick={() => setFilter('side')} />
         <Button title="Bebidas" onClick={() => setFilter('drinks')} />
-
+        </div>
+        <div className='productsMenu'>
         {productsFilter.map((product) => (
-          <div>
-            <h1>{product.name}</h1>
-            {/* <img src={product.image}/> */}
-            <p>{product.flavor}</p>
-            <p>{product.complement}</p>
-            <p>{product.price}</p>
+          <div className='cardMenu'>
+            <h1 className='productName'>{product.name}</h1>
+            {<img className='imgMenu' src={product.image}/>}
+            <p className='productFlavor'>{product.flavor}</p>
+            <p className='productComplement'>{product.complement}</p>
+            <div className='productLinePrice'>
+            <p className='productPrice'>R$ {product.price},00</p>
+            <OperatorSum id='operatorSumMenu' />
+            </div>
           </div>
         ))}
+        </div>
     </WaiterTemplate>
   );
 }
