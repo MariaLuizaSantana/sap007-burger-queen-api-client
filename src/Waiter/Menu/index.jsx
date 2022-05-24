@@ -61,11 +61,12 @@ const WaiterMenu = () =>{
         {Boolean(error) && (
           <h1 className="msgError">{error}</h1>
         )}
-        
+        <div>
         <Button title="Café da Manhã" onClick={() => setFilter('breakfast')} />
         <Button title="Lanches" onClick={() => setFilter('hamburguer')} />
         <Button title="Acompanhamentos" onClick={() => setFilter('side')} />
         <Button title="Bebidas" onClick={() => setFilter('drinks')} />
+        </div>
 
         {productsFilter.map((product) => (
           <div>
