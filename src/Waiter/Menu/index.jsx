@@ -3,6 +3,7 @@ import WaiterTemplate from '../waiterTemplate';
 import Button from '../../Components/button';
 import OperatorSum from '../../Components/operatorsum';
 import './menu.css'
+import Operator from '../../Components/operator';
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
@@ -64,10 +65,10 @@ const WaiterMenu = () =>{
           <h1 className="msgError">{error}</h1>
         )}
         <div className='btnMenu'>
-        <Button title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
-        <Button title="Lanches" onClick={() => setFilter('hamburguer')} />
-        <Button title="Acompanhamentos" onClick={() => setFilter('side')} />
-        <Button title="Bebidas" onClick={() => setFilter('drinks')} />
+          <Button title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
+          <Button title="Lanches" onClick={() => setFilter('hamburguer')} />
+          <Button title="Acompanhamentos" onClick={() => setFilter('side')} />
+          <Button title="Bebidas" onClick={() => setFilter('drinks')} />
         </div>
         <div className='productsMenu'>
         {productsFilter.map((product) => (
@@ -75,10 +76,10 @@ const WaiterMenu = () =>{
             <h1 className='productName'>{product.name}</h1>
             {<img className='imgMenu' src={product.image}/>}
             <p className='productFlavor'>{product.flavor}</p>
-            <p className='productComplement'>{product.complement}</p>
+            <p className='productComplement'>- {product.complement}</p>
             <div className='productLinePrice'>
-            <p className='productPrice'>R$ {product.price},00</p>
-            <OperatorSum id='operatorSumMenu' />
+              <p className='productPrice'>R$ {product.price},00</p>
+              <Operator clickFunction={() => console.log('id', product)} calculator='+'/>
             </div>
           </div>
         ))}
