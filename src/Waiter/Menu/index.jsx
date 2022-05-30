@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import WaiterTemplate from '../waiterTemplate';
 import Button from '../../Components/button';
-import OperatorSum from '../../Components/operatorsum';
+import Operator from '../../Components/operator';
 import './menu.css'
+import Command from './command';
+
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('');
+  const [counter, setCounter] = useState(0)
 
   const getProducts = async () => {
     setLoading(true);
@@ -32,8 +35,10 @@ const WaiterMenu = () =>{
       } else {
         if (resultApi.status === 200){
           setProducts(content);
+          console.log(token)
         }
       }
+      localStorage.setItem('id', content.id);
     } catch (e) {
       setLoading(false);
       setError('Erro desconhecido');
@@ -51,6 +56,11 @@ const WaiterMenu = () =>{
       return false;
     }
   });
+  
+  function increment(){
+    // console.log('aumenta')
+     setCounter(counter + 1)
+   } 
 
   return (
     <WaiterTemplate>
@@ -78,7 +88,7 @@ const WaiterMenu = () =>{
             <p className='productComplement'>{product.complement}</p>
             <div className='productLinePrice'>
             <p className='productPrice'>R$ {product.price},00</p>
-            <OperatorSum id='operatorSumMenu' />
+            <Operator clickFunction={() => console.log(product.id)} calculator='+'/>
             </div>
           </div>
         ))}
