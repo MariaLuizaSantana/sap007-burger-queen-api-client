@@ -106,7 +106,7 @@ const CreateUser = () =>{
             />
           </div>
             <Select />
-          <Button title="CADASTRAR" />
+          <Button className='buttonLogin' title="CADASTRAR" />
       </form>
     </AdminTemplate>
   );

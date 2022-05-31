@@ -86,7 +86,7 @@ const UpdateUser = () =>{
               />
           </div>
           <Select />
-          <Button title="ATUALIZAR" />
+          <Button className='buttonLogin' title="ATUALIZAR" />
       </form>
     </AdminTemplate>
   );

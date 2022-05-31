@@ -68,7 +68,7 @@ const DeleteUser = () =>{
                 icon={<i className="ph-circle-wavy-check"></i>}
                 />
           </div>
-        <Button title="DELETAR" />
+        <Button className='buttonLogin' title="DELETAR" />
       </form>
     </AdminTemplate>
   );

@@ -94,7 +94,7 @@ const Login = () => {
               icon={<i className="ph-lock-key"></i>}
             />
           </div>
-          <Button title="ENTRAR" />
+          <Button className='buttonLogin' title="ENTRAR" />
         </form>
       </header>
       <Footer />

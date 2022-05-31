@@ -7,7 +7,7 @@
     justify-content: space-evenly;
 }
 
-.buttonLogin{
+.buttonOrder{
     width: 130px;
     font-size: 13px;
 }
@@ -30,7 +30,6 @@
 .productsMenu{
     display: grid;
     grid-template-columns: 230px 0px;
-    margin-left: 20px;
 }
 
 .productName{
@@ -76,6 +75,63 @@
     font-size: 18px;
 }
 
+.tela-menu{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.productsOrder{
+    background-color: white;
+    width: 230px;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: 2px solid #400101;
+    margin-left: 220px;
+}
+
+.inputOrderContainer{
+    width: 80%;
+    margin: 0 auto;
+    color: #400101;
+    border-color: #400101;
+}
+
+.orderClient{
+    margin-top: 10px;
+    color: #400101;
+    font-weight: lighter;
+}
+
+.orderName{
+    text-align: initial;
+    margin-left: 5px;
+    margin-top: 10px;
+    color: #400101;
+}
+
+.orderFlavor{
+    text-align: initial;
+    margin-left: 5px;
+    margin-top: 10px;
+    color: #400101;
+    font-weight: lighter;
+}
+
+.productTotal{
+    background-color: #400101;
+    color: #FFECDC;
+    padding: 5px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.sendOrder{
+    margin-top: 20px;
+    width: auto;
+    margin-left: 215px;
+}
+
 @media screen and (min-width: 1024px) {
     .menu-admin{
         display: block;
@@ -83,5 +139,20 @@
 
     .productsMenu{
         grid-template-columns: 230px 230px 230px 230px;
+    }
+
+    .tela-menu{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .productsOrder{
+        width: 350px;
+        margin-left: 15px;
+    }
+
+    .sendOrder{
+        margin-left: 0px;
     }
 }
