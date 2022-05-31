@@ -29,7 +29,7 @@
 
 .productsMenu{
     display: grid;
-    grid-template-columns: 230px 0px;
+    grid-template-columns: 1fr 1fr;
 }
 
 .productName{
@@ -87,14 +87,21 @@
     margin-top: 15px;
     border-radius: 5px;
     border: 2px solid #400101;
-    margin-left: 220px;
 }
 
 .inputOrderContainer{
-    width: 80%;
+    width: auto;
     margin: 0 auto;
     color: #400101;
     border-color: #400101;
+    height: 30px;
+    font-size: 15px;
+    border: solid 1px #400101;
+    color: #400101;
+    border-radius: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    outline: 0;
+    padding-left: 10px;
 }
 
 .orderClient{
@@ -113,7 +120,6 @@
 .orderFlavor{
     text-align: initial;
     margin-left: 5px;
-    margin-top: 10px;
     color: #400101;
     font-weight: lighter;
 }
@@ -129,7 +135,7 @@
 .sendOrder{
     margin-top: 20px;
     width: auto;
-    margin-left: 215px;
+    font-size: 15px;
 }
 
 @media screen and (min-width: 1024px) {
@@ -138,7 +144,7 @@
     }
 
     .productsMenu{
-        grid-template-columns: 230px 230px 230px 230px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 
     .tela-menu{

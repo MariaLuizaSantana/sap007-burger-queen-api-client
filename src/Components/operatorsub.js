@@ -12,7 +12,6 @@ function OperatorSub (){
     return(
         <>
             <Operator clickFunction={decrement} calculator='-'/>
-            <p>Total: {counter}</p>
         </>
     )
 }

@@ -62,6 +62,7 @@ const DeleteUser = () =>{
           <div className="infoLogin">
             <h1>ID do Funcionário</h1>
               <Input
+                className='inputLogin'
                 type="text"
                 placeholder="Número de identificação do funcionário"
                 name="uid"

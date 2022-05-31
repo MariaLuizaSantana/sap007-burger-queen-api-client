@@ -81,6 +81,7 @@ const CreateUser = () =>{
         <div className="infoLogin">
           <h1>Nome do Funcionário</h1>
             <Input
+              className='inputLogin'
               type="text"
               placeholder="Nome do funcionário"
               name="name"
@@ -90,6 +91,7 @@ const CreateUser = () =>{
           <div className="infoLogin">
             <h1>E-mail</h1>
               <Input
+              className='inputLogin'
               type="email"
               placeholder="E-mail do funcionário"
               name="email"
@@ -99,6 +101,7 @@ const CreateUser = () =>{
           <div className="infoLogin">
             <h1>Senha</h1>
             <Input
+              className='inputLogin'
               type="password"
               placeholder="Senha Geral"
               name="password"
