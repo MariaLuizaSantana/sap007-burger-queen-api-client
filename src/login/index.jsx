@@ -38,6 +38,7 @@ const Login = () => {
         }
     }
     localStorage.setItem('Token', content.token);
+    console.log(content.token)
     } catch { 
       setLoading(false);
       setError('Erro desconhecido');

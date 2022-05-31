@@ -3,44 +3,29 @@ import AdminTemplate from '../adminTemplate';
 import Input from '../../Components/input';
 import Button from '../../Components/button';
 import Select from '../../Components/select';
+import { AuthUpdateUser } from '../../Service/api';
 
 const UpdateUser = () =>{
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
+  const [uid, setUid] = useState('');
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
+
+  const token = localStorage.getItem('Token');
 
   const onUpdate = async (e) => {
-    e.preventDefault();
-
-    setLoading(true);
-    setError(false);
-    setSuccess(false);
-
-    const uid = e.target.uid.value;
-    const name = e.target.name.value;
-    const role = e.target.role.value;
-    const token = localStorage.getItem('Token');
+  e.preventDefault();
 
     try {
-      const resultApi = await fetch(`https://lab-api-bq.herokuapp.com/users/${uid}`, {
-        method: 'PUT',
-        headers: {
-          accept: 'application/json',
-          Authorization: token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          role: role,
-        }),
-      });
-      const content = await resultApi.json();
-      setLoading(false);
+      const contentApi = await AuthUpdateUser(uid,token,name,role)
+      const content = await contentApi.json()
 
-      if (resultApi.status !== 200) {
+      if (contentApi.status !== 200) {
         setError(content.message);
       } else {
-        if (resultApi.status === 200){
+        if (contentApi.status === 200){
           setSuccess('Usuário atualizado com sucesso!');
         }
       }
@@ -52,7 +37,7 @@ const UpdateUser = () =>{
 
   return (
     <AdminTemplate>
-      <form className="formLogin" onSubmit={onUpdate}>
+      <form className="formLogin">
         <h1>ATUALIZAR UM USUÁRIO (NOME E CARGO)</h1>
 
         {Boolean(loading) && (
@@ -74,6 +59,8 @@ const UpdateUser = () =>{
               placeholder="Número de identificação do funcionário"
               name="uid"
               icon={<i className="ph-circle-wavy-check"></i>}
+              value={uid}
+              onChange={(e)=>{setUid(e.target.value)}}
               />
         </div>
         <div className="infoLogin">
@@ -83,13 +70,15 @@ const UpdateUser = () =>{
               placeholder="Novo nome do funcionário"
               name="name"
               icon={<i className="ph-user"></i>}
+              value={name}
+              onChange={(e)=> {setName(e.target.value)}}
               />
           </div>
-          <Select />
-          <Button title="ATUALIZAR" />
+          <Select value={role} onChange={(e)=> setRole(e.target.value)} />
+          <Button title="ATUALIZAR" onClick={onUpdate}/>
       </form>
     </AdminTemplate>
   );
-}
+};
 
 export default UpdateUser;

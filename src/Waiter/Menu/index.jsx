@@ -3,7 +3,8 @@ import WaiterTemplate from '../waiterTemplate';
 import Button from '../../Components/button';
 import Operator from '../../Components/operator';
 import './menu.css'
-import Command from './command';
+//import Command from './command';
+import { AuthGetProduct } from '../../Service/api';
 
 
 const WaiterMenu = () =>{
@@ -11,29 +12,20 @@ const WaiterMenu = () =>{
   const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('');
-  const [counter, setCounter] = useState(0)
+  //const [counter, setCounter] = useState(0)
 
-  const getProducts = async () => {
-    setLoading(true);
-    setError(false);
+  const token = localStorage.getItem('Token');
 
-    const token = localStorage.getItem('Token');
-
+  const getProducts = async (e) => {
+    
     try {
-      const resultApi = await fetch('https://lab-api-bq.herokuapp.com/products', {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: token,
-        },
-      });
-      const content = await resultApi.json();
-      setLoading(false);
+      const contentApi = await AuthGetProduct(token)
+      const content = await contentApi.json();
 
-      if (resultApi.status !== 200) {
+      if (contentApi.status !== 200) {
         setError(content.message);
       } else {
-        if (resultApi.status === 200){
+        if (contentApi.status === 200){
           setProducts(content);
           console.log(token)
         }
@@ -57,11 +49,6 @@ const WaiterMenu = () =>{
     }
   });
   
-  function increment(){
-    // console.log('aumenta')
-     setCounter(counter + 1)
-   } 
-
   return (
     <WaiterTemplate>
       <h1>CARDÁPIO</h1>
