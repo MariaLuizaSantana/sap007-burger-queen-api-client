@@ -5,6 +5,7 @@ import './menu.css'
 import Operator from '../../Components/operator';
 import Input from '../../Components/input';
 import { AuthGetProduct } from '../../Service/api';
+import OperatorSub from '../../Components/operatorsub'
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
@@ -49,10 +50,34 @@ const WaiterMenu = () =>{
   });
 
   const addItemToOrder = (item) => {
-    setOrderItems([
-      ...orderItems,
-      item,
-    ]);
+    const found = orderItems.find((foundItem) => {
+      return foundItem.id === item.id
+    })
+    
+    if (found) {
+      const newOrder = orderItems.map((orderItem) => {
+        if (found.id !== orderItem.id) {
+          return orderItem
+        } else {
+          return {
+            ...orderItem,
+            qtd: (orderItem.qtd || 0) + 1
+          }
+        }
+      })
+      setOrderItems(newOrder);
+    } else {
+      setOrderItems([
+        ...orderItems,
+        item,
+      ]);
+    }
+  }
+
+  const sumPrice = () => {
+    return orderItems.reduce((total, products) => {
+      return total + (products.price * (products.qtd || 1))
+    }, 0)
   }
 
   return (
@@ -95,22 +120,23 @@ const WaiterMenu = () =>{
                 className="inputOrderContainer"
                 type="text"
                 name="client"
-                icon={<i className="ph-crown"></i>}
                 />
                 <h1 className='orderClient'>MESA</h1>
                 <Input
+                className="inputOrderContainer"
                 type="number"
                 name="table"
-                icon={<i className="ph-map-pin"></i>}
+                min="0"
                 />
             {orderItems.map((orderProduct) => (
               <div className='cardOrder' key={orderProduct}>
-                <h1 className='orderName'>{orderProduct.name}</h1>
+                <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd || 1}</h1>
                 <p className='orderFlavor'>{orderProduct.flavor}</p>
                 <p className='orderFlavor'>{orderProduct.complement}</p>
+                {/* <OperatorSub/> */}
               </div>
             ))}
-              <h1 className='productTotal'>TOTAL:</h1>
+              <h1 className='productTotal'>{`TOTAL: R$${sumPrice()},00`}</h1>
             </section>
             <div>
               <Button className="buttonLogin sendOrder" title="ENVIAR PEDIDO" />

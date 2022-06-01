@@ -55,6 +55,7 @@ const UpdateUser = () =>{
         <div className="infoLogin">
           <h1>ID do Funcionário</h1>
             <Input
+              className='inputLogin'
               type="text"
               placeholder="Número de identificação do funcionário"
               name="uid"
@@ -66,6 +67,7 @@ const UpdateUser = () =>{
         <div className="infoLogin">
           <h1>Nome do Funcionário</h1>
             <Input
+              className='inputLogin'
               type="text"
               placeholder="Novo nome do funcionário"
               name="name"
