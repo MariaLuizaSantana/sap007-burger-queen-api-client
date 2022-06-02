@@ -1,7 +1,7 @@
 import React from 'react';
 import './input.css';
 
-const Input = ({ min, className, type, placeholder, name, icon }) => (
+const Input = ({ min, className, type, placeholder, name, icon, onChange}) => (
   <div className="inputLoginContainer">
     <div className="inputLoginIcon">
       {icon}
@@ -13,6 +13,7 @@ const Input = ({ min, className, type, placeholder, name, icon }) => (
       placeholder={placeholder}
       name={name}
       min={min}
+      onChange={onChange}
     />
   </div>
 );
