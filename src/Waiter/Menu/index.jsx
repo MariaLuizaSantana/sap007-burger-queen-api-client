@@ -96,7 +96,7 @@ const WaiterMenu = () =>{
 
   const sumPrice = () => {
     return orderItems.reduce((total, products) => {
-      return total + (products.price * (products.qtd || - 1))
+      return total + (products.price * (products.qtd || 1))
     }, 0)
   }
 
