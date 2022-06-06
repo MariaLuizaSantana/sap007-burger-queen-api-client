@@ -21,7 +21,9 @@ const Login = () => {
 
     try {
       const contentApi =  await AuthUser(email, password)
+      console.log(contentApi);
       const content = await contentApi.json();
+      console.log(content);
 
 
       if (contentApi.status !== 200) {

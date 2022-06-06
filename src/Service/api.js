@@ -69,3 +69,26 @@ export async function AuthGetProduct (token){
     },
   });
 }
+
+export async function CreateOrder (token, info){
+    
+  return await fetch('https://lab-api-bq.herokuapp.com/orders', {
+    method: 'POST ',
+    headers: {
+      accept: 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify(info)
+  });
+}
+
+export async function ListOrder (token, client, table, item){
+    
+  return await fetch('https://lab-api-bq.herokuapp.com/orders', {
+    method: 'GET ',
+    headers: {
+      accept: 'application/json',
+      Authorization: token,
+    },
+  });
+}

@@ -20,7 +20,9 @@ const CreateUser = () =>{
 
       try {
         const contentApi = await CreateNewUser(name, email, password, role)
+        console.log(contentApi)
         const content = await contentApi.json()
+        console.log(content)
 
         if ( name == '') {
           setError('Preencha o campo do nome');

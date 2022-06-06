@@ -4,22 +4,29 @@ import Button from '../../Components/button';
 import './menu.css'
 import Operator from '../../Components/operator';
 import Input from '../../Components/input';
-import { AuthGetProduct } from '../../Service/api';
-import OperatorSub from '../../Components/operatorsub'
+import { AuthGetProduct, CreateOrder } from '../../Service/api';
+import { tab } from '@testing-library/user-event/dist/tab';
+
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('breakfast');
   const [orderItems, setOrderItems] = useState([]);
+  const [client, setClient] = useState('');
+  const [table, setTable] = useState('');
+  // const [id, setId] = useState('');
+  // const [qtd, setQtd] = useState('');
 
   const token = localStorage.getItem('Token');
 
-  const getProducts = async (e) => {
+  const getProducts = async () => {
+
     
     try {
-      const contentApi = await AuthGetProduct(token)
+      const contentApi = await AuthGetProduct(token);
       const content = await contentApi.json();
 
       if (contentApi.status !== 200) {
@@ -27,15 +34,14 @@ const WaiterMenu = () =>{
       } else {
         if (contentApi.status === 200){
           setProducts(content);
-          console.log(token)
         }
       }
-      localStorage.setItem('id', content.id);
     } catch (e) {
       setLoading(false);
       setError('Erro desconhecido');
     }
   };
+
 
   useEffect(() => {
     getProducts();
@@ -74,11 +80,54 @@ const WaiterMenu = () =>{
     }
   }
 
+  const removeItemToOrder = (item) => {
+    let refreshOrder = [...orderItems];
+    const found = refreshOrder.find((foundItem) => {
+      return foundItem.id === item.id
+    })
+    if (found.qtd > 1){
+      found.qtd -= 1
+    }
+    else{
+      refreshOrder = refreshOrder.filter((refreshItem) => refreshItem.id !== item.id)
+    }
+    setOrderItems(refreshOrder)
+  }
+
   const sumPrice = () => {
     return orderItems.reduce((total, products) => {
-      return total + (products.price * (products.qtd || 1))
+      return total + (products.price * (products.qtd || - 1))
     }, 0)
   }
+
+  const handleProducts = () => {
+    const orderProducts = {
+      client: client,
+      table: table,
+      products: orderItems.map((item)=>{
+       const productItems = {
+         name: item.name,
+         flavor: item.flavor,
+         complement:item.complement,
+         id: item.id,
+         qtd: item.qtd,
+       }
+       return productItems
+      })
+    }
+    return orderProducts
+  }
+  
+  // if(client=''){
+  //   setError('Preencha o campo cliente')
+  // }
+  // else if(orderItems.length == 0){
+  //   setError('Comanda vazia')
+  // }
+  // else{
+  //   setSuccess('Pedido mandado para cozinha')
+  // }
+
 
   return (
     <WaiterTemplate>
@@ -90,6 +139,9 @@ const WaiterMenu = () =>{
 
         {Boolean(error) && (
           <h1 className="msgError">{error}</h1>
+        )}
+        {Boolean(success) && (
+          <h1 className="msgSuccess">{success}</h1>
         )}
         <div className='btnMenu'>
           <Button className="buttonLogin buttonOrder" title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
@@ -112,7 +164,6 @@ const WaiterMenu = () =>{
             </div>
           ))}
           </section>
-          <form>
             <section className='productsOrder'>
                 <h1 className='productName'>PEDIDO</h1>
                 <h1 className='orderClient'>CLIENTE</h1>
@@ -120,6 +171,8 @@ const WaiterMenu = () =>{
                 className="inputOrderContainer"
                 type="text"
                 name="client"
+                value={client}
+                onChange={(e)=> {setClient(e.target.value)}}
                 />
                 <h1 className='orderClient'>MESA</h1>
                 <Input
@@ -127,21 +180,22 @@ const WaiterMenu = () =>{
                 type="number"
                 name="table"
                 min="0"
+                value={table}
+                onChange={(e)=> {setTable(e.target.value)}}
                 />
-            {orderItems.map((orderProduct) => (
-              <div className='cardOrder' key={orderProduct}>
+            {orderItems.map((orderProduct, key) => (
+              <div className='cardOrder' key={key}>
                 <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd || 1}</h1>
                 <p className='orderFlavor'>{orderProduct.flavor}</p>
                 <p className='orderFlavor'>{orderProduct.complement}</p>
-                {/* <OperatorSub/> */}
+                <Operator clickFunction={() => removeItemToOrder(orderProduct)} calculator='-' />
               </div>
             ))}
               <h1 className='productTotal'>{`TOTAL: R$${sumPrice()},00`}</h1>
             </section>
             <div>
-              <Button className="buttonLogin sendOrder" title="ENVIAR PEDIDO" />
+              <Button className="buttonLogin sendOrder" title="ENVIAR PEDIDO" onClick={handleProducts} />
             </div>
-          </form>
         </div>
     </WaiterTemplate>
   );
