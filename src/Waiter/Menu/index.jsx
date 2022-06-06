@@ -1,34 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import WaiterTemplate from '../waiterTemplate';
 import Button from '../../Components/button';
+import './menu.css'
+import Operator from '../../Components/operator';
+import Input from '../../Components/input';
+import { AuthGetProduct, CreateOrder } from '../../Service/api';
+import { tab } from '@testing-library/user-event/dist/tab';
+
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('breakfast');
+  const [orderItems, setOrderItems] = useState([]);
+  const [client, setClient] = useState('');
+  const [table, setTable] = useState('');
+  // const [id, setId] = useState('');
+  // const [qtd, setQtd] = useState('');
+
+  const token = localStorage.getItem('Token');
 
   const getProducts = async () => {
-    setLoading(true);
-    setError(false);
 
-    const token = localStorage.getItem('Token');
-
+    
     try {
-      const resultApi = await fetch('https://lab-api-bq.herokuapp.com/products', {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: token,
-        },
-      });
-      const content = await resultApi.json();
-      setLoading(false);
+      const contentApi = await AuthGetProduct(token);
+      const content = await contentApi.json();
 
-      if (resultApi.status !== 200) {
+      if (contentApi.status !== 200) {
         setError(content.message);
       } else {
-        if (resultApi.status === 200){
+        if (contentApi.status === 200){
           setProducts(content);
         }
       }
@@ -37,6 +41,7 @@ const WaiterMenu = () =>{
       setError('Erro desconhecido');
     }
   };
+
 
   useEffect(() => {
     getProducts();
@@ -50,6 +55,80 @@ const WaiterMenu = () =>{
     }
   });
 
+  const addItemToOrder = (item) => {
+    const found = orderItems.find((foundItem) => {
+      return foundItem.id === item.id
+    })
+    
+    if (found) {
+      const newOrder = orderItems.map((orderItem) => {
+        if (found.id !== orderItem.id) {
+          return orderItem
+        } else {
+          return {
+            ...orderItem,
+            qtd: (orderItem.qtd || 0) + 1
+          }
+        }
+      })
+      setOrderItems(newOrder);
+    } else {
+      setOrderItems([
+        ...orderItems,
+        item,
+      ]);
+    }
+  }
+
+  const removeItemToOrder = (item) => {
+    let refreshOrder = [...orderItems];
+    const found = refreshOrder.find((foundItem) => {
+      return foundItem.id === item.id
+    })
+    if (found.qtd > 1){
+      found.qtd -= 1
+    }
+    else{
+      refreshOrder = refreshOrder.filter((refreshItem) => refreshItem.id !== item.id)
+    }
+    setOrderItems(refreshOrder)
+  }
+
+  const sumPrice = () => {
+    return orderItems.reduce((total, products) => {
+      return total + (products.price * (products.qtd || - 1))
+    }, 0)
+  }
+
+  const handleProducts = () => {
+    const orderProducts = {
+      client: client,
+      table: table,
+      products: orderItems.map((item)=>{
+       const productItems = {
+         name: item.name,
+         flavor: item.flavor,
+         complement:item.complement,
+         id: item.id,
+         qtd: item.qtd,
+       }
+       return productItems
+      })
+    }
+    return orderProducts
+  }
+  
+  // if(client=''){
+  //   setError('Preencha o campo cliente')
+  // }
+  // else if(orderItems.length == 0){
+  //   setError('Comanda vazia')
+  // }
+  // else{
+  //   setSuccess('Pedido mandado para cozinha')
+  // }
+
+
   return (
     <WaiterTemplate>
       <h1>CARDÁPIO</h1>
@@ -61,22 +140,63 @@ const WaiterMenu = () =>{
         {Boolean(error) && (
           <h1 className="msgError">{error}</h1>
         )}
-        <div>
-        <Button title="Café da Manhã" onClick={() => setFilter('breakfast')} />
-        <Button title="Lanches" onClick={() => setFilter('hamburguer')} />
-        <Button title="Acompanhamentos" onClick={() => setFilter('side')} />
-        <Button title="Bebidas" onClick={() => setFilter('drinks')} />
+        {Boolean(success) && (
+          <h1 className="msgSuccess">{success}</h1>
+        )}
+        <div className='btnMenu'>
+          <Button className="buttonLogin buttonOrder" title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
+          <Button className="buttonLogin buttonOrder" title="Lanches" onClick={() => setFilter('hamburguer')} />
+          <Button className="buttonLogin buttonOrder" title="Acompanhamentos" onClick={() => setFilter('side')} />
+          <Button className="buttonLogin buttonOrder" title="Bebidas" onClick={() => setFilter('drinks')} />
         </div>
-
-        {productsFilter.map((product) => (
-          <div>
-            <h1>{product.name}</h1>
-            {/* <img src={product.image}/> */}
-            <p>{product.flavor}</p>
-            <p>{product.complement}</p>
-            <p>{product.price}</p>
-          </div>
-        ))}
+        <div className='tela-menu'>
+          <section className='productsMenu'>
+          {productsFilter.map((product) => (
+            <div className='cardMenu' key={product.id}>
+              <h1 className='productName'>{product.name}</h1>
+              {<img className='imgMenu' src={product.image}/>}
+              <p className='productFlavor'>{product.flavor}</p>
+              <p className='productComplement'>- {product.complement}</p>
+              <div className='productLinePrice'>
+                <p className='productPrice'>R$ {product.price},00</p>
+                <Operator clickFunction={() => addItemToOrder(product)} calculator='+'/>
+              </div>
+            </div>
+          ))}
+          </section>
+            <section className='productsOrder'>
+                <h1 className='productName'>PEDIDO</h1>
+                <h1 className='orderClient'>CLIENTE</h1>
+                <Input
+                className="inputOrderContainer"
+                type="text"
+                name="client"
+                value={client}
+                onChange={(e)=> {setClient(e.target.value)}}
+                />
+                <h1 className='orderClient'>MESA</h1>
+                <Input
+                className="inputOrderContainer"
+                type="number"
+                name="table"
+                min="0"
+                value={table}
+                onChange={(e)=> {setTable(e.target.value)}}
+                />
+            {orderItems.map((orderProduct, key) => (
+              <div className='cardOrder' key={key}>
+                <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd || 1}</h1>
+                <p className='orderFlavor'>{orderProduct.flavor}</p>
+                <p className='orderFlavor'>{orderProduct.complement}</p>
+                <Operator clickFunction={() => removeItemToOrder(orderProduct)} calculator='-' />
+              </div>
+            ))}
+              <h1 className='productTotal'>{`TOTAL: R$${sumPrice()},00`}</h1>
+            </section>
+            <div>
+              <Button className="buttonLogin sendOrder" title="ENVIAR PEDIDO" onClick={handleProducts} />
+            </div>
+        </div>
     </WaiterTemplate>
   );
 }

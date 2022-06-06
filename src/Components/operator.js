@@ -1,6 +1,12 @@
+import './operator.css'
+
 function Operator (props){
     return(
-        <button onClick={props.clickFunction}>{props.calculator}</button>
+        <button
+            className = 'operatorSumMenu'
+            onClick={props.clickFunction}>{props.calculator}
+
+         </button>
     )
 }
 
