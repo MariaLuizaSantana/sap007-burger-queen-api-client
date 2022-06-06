@@ -6,58 +6,46 @@ import '../Style.css';
 import Input from '../Components/input';
 import Button from '../Components/button';
 import Footer from '../Components/footer';
+import { AuthUser } from '../Service/api';
 
 const Login = () => {
+  
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const onLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault()
 
-    setLoading(true);
-    setError(false);
-
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
-    //Dados de login: email: engamandagusmao@gmail.com /senha: bq123456 /role: waiter
-    //Dados de login: email: bq@admin.com /senha: bq123456 /role: admin
-    //Dados de login: email: aisha@bms2.com /senha: bq123456 /role: chef
     try {
-      const resultApi = await fetch('https://lab-api-bq.herokuapp.com/auth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
-      const content = await resultApi.json();
-      setLoading(false);
+      const contentApi =  await AuthUser(email, password)
+      console.log(contentApi);
+      const content = await contentApi.json();
+      console.log(content);
 
-      if (resultApi.status !== 200) {
+
+      if (contentApi.status !== 200) {
         setError(content.message);
-      } else {
-        if (content.role === 'waiter'){
-          navigate('/waiter');
-        } else if (content.role === 'chef'){
-          navigate('/chef');
-        } else if (content.role === 'admin'){
-          navigate('/admin');
+    } else {
+        if (content.role === 'waiter') {
+            navigate('/waiter');
+        } else if (content.role === 'chef') {
+            navigate('/chef');
+        } else if (content.role === 'admin') {
+            navigate('/admin');
         } else {
-          navigate('/not-found');
+            navigate('/not-found');
         }
-      }
-      localStorage.setItem('Token', content.token);
-    } catch (e) {
+    }
+    localStorage.setItem('Token', content.token);
+    console.log(content.token)
+    } catch { 
       setLoading(false);
       setError('Erro desconhecido');
     }
-  };
+  } 
 
   return (
     <div className="App">
@@ -75,7 +63,7 @@ const Login = () => {
           <h1 className="msgError">{error}</h1>
         )}
 
-        <form className="formLogin" onSubmit={onLogin}>
+        <form className="formLogin">
           <div className="infoLogin">
             <h1>E-mail</h1>
             <Input
@@ -83,6 +71,8 @@ const Login = () => {
               placeholder="Digite seu e-mail"
               name="email"
               icon={<i className="ph-envelope"></i>}
+              value={email}
+              onChange={(e)=> {setEmail(e.target.value)}}
             />
           </div>
           <div className="infoLogin">
@@ -92,9 +82,11 @@ const Login = () => {
               placeholder="Digite sua senha"
               name="password"
               icon={<i className="ph-lock-key"></i>}
+              value={password}
+              onChange={(e)=> {setPassword(e.target.value)}}
             />
           </div>
-          <Button title="ENTRAR" />
+          <Button title="ENTRAR" onClick={handleLogin}/>
         </form>
       </header>
       <Footer />

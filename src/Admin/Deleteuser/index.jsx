@@ -2,40 +2,31 @@ import React, { useState } from 'react';
 import AdminTemplate from '../adminTemplate';
 import Input from '../../Components/input';
 import Button from '../../Components/button';
+import { AuthDeleteUser } from '../../Service/api';
 
 const DeleteUser = () =>{
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false)
+  const [uid, setUid] = useState('')
 
-  const onDelete = async (e) => {
+  const token = localStorage.getItem('Token');
+
+  const handleDeleteUser = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
-    setError(false);
-    setSuccess(false);
+    try { 
+      const contentApi = await AuthDeleteUser(uid, token)
+      const content = await contentApi.json()
 
-    const uid = e.target.uid.value;
-    const token = localStorage.getItem('Token');
-
-    try {
-      const resultApi = await fetch(`https://lab-api-bq.herokuapp.com/users/${uid}`, {
-        method: 'DELETE',
-        headers: {
-          accept: 'application/json',
-          Authorization: token,
-        },
-      });
-      const content = await resultApi.json();
-      setLoading(false);
-
-      if (resultApi.status !== 200) {
+      if (contentApi.status !== 200) {
         setError(content.message);
       } else {
-        if (resultApi.status === 200){
+        if (contentApi.status === 200){
           setSuccess('Usuário deletado com sucesso!');
         }
       }
+      
     } catch (e) {
       setLoading(false);
       setError('Erro desconhecido');
@@ -44,7 +35,7 @@ const DeleteUser = () =>{
 
   return (
     <AdminTemplate>
-      <form className="formLogin" onSubmit={onDelete}>
+      <form className="formLogin">
         <h1>DELETAR UM USUÁRIO</h1>
           
           {Boolean(loading) && (
@@ -62,16 +53,19 @@ const DeleteUser = () =>{
           <div className="infoLogin">
             <h1>ID do Funcionário</h1>
               <Input
+                className='inputLogin'
                 type="text"
                 placeholder="Número de identificação do funcionário"
-                name="uid"
+                name="id"
                 icon={<i className="ph-circle-wavy-check"></i>}
+                value={uid}
+                onChange={(e)=> {setUid(e.target.value)}}
                 />
           </div>
-        <Button title="DELETAR" />
+        <Button title="DELETAR" onClick={handleDeleteUser} />
       </form>
     </AdminTemplate>
   );
-}
+};
 
 export default DeleteUser;

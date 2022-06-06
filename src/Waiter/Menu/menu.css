@@ -1,16 +1,20 @@
+.menu-admin{
+    display: none;
+}
+
 .btnMenu{
     display: flex;
     justify-content: space-evenly;
 }
 
-.buttonLogin{
+.buttonOrder{
     width: 130px;
     font-size: 13px;
 }
 
 .cardMenu{
     background-color: white;
-    width: 250px;
+    width: 200px;
     margin: 15px;
     border-radius: 5px;
     border: 2px solid #400101;
@@ -48,18 +52,6 @@
     font-size: 20px;
 }
 
-#operatorSumMenu{
-    background: #D97904;
-    width: 40px;
-    height: 40px;
-    border-radius: 5px 0px 0px 0px;
-    border: 1px solid #400101;
-    font-size: 20px;
-    font-size: 20px;
-    font-weight: bolder;
-    color: #FFECDC;
-}
-
 .productLinePrice{
     display: flex;
     justify-content: space-between;
@@ -69,4 +61,92 @@
     color: #400101;
     font-weight: lighter;
     font-size: 18px;
+}
+
+.tela-menu{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.productsOrder{
+    background-color: white;
+    width: 230px;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: 2px solid #400101;
+}
+
+.inputOrderContainer{
+    width: auto;
+    margin: 0 auto;
+    color: #400101;
+    border-color: #400101;
+    height: 30px;
+    font-size: 15px;
+    border: solid 1px #400101;
+    color: #400101;
+    border-radius: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    outline: 0;
+    padding-left: 10px;
+}
+
+.orderClient{
+    margin-top: 10px;
+    color: #400101;
+    font-weight: lighter;
+}
+
+.orderName{
+    text-align: initial;
+    margin-left: 5px;
+    margin-top: 10px;
+    color: #400101;
+}
+
+.orderFlavor{
+    text-align: initial;
+    margin-left: 5px;
+    color: #400101;
+    font-weight: lighter;
+}
+
+.productTotal{
+    background-color: #400101;
+    color: #FFECDC;
+    padding: 5px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.sendOrder{
+    margin-top: 20px;
+    width: auto;
+    font-size: 15px;
+}
+
+@media screen and (min-width: 1024px) {
+    .menu-admin{
+        display: block;
+    }
+
+    .productsMenu{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .tela-menu{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .productsOrder{
+        width: 350px;
+        margin-left: 15px;
+    }
+
+    .sendOrder{
+        margin-left: 0px;
+    }
 }
