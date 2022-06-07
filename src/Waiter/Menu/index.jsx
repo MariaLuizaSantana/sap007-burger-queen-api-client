@@ -15,11 +15,12 @@ const WaiterMenu = () =>{
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('breakfast');
   const [orderItems, setOrderItems] = useState([]);
-  const [info, setInfo] = useState({
-    client:'',
-    table:'',
-  })
-
+  // const [info, setInfo] = useState({
+  //   client:'',
+  //   table:'',
+  // })
+  const [client, setClient] = useState('')
+  const [table, setTable] = useState('')
   const token = localStorage.getItem('Token');
 
   const getProducts = async () => {
@@ -67,7 +68,7 @@ const WaiterMenu = () =>{
         } else {
           return {
             ...orderItem,
-            qtd: (orderItem.qtd || 0) + 1
+            qtd: orderItem.qtd ? orderItem.qtd + 1 :  1
           }
         }
       })
@@ -75,7 +76,10 @@ const WaiterMenu = () =>{
     } else {
       setOrderItems([
         ...orderItems,
-        item,
+        {
+          ...item,
+          qtd:1
+        },
       ]);
     }
   }
@@ -101,40 +105,31 @@ const WaiterMenu = () =>{
   }
 
   const handleProducts = async () => {
-    const contentApi = await CreateOrder(token, info);
+
+    const orderProducts = orderItems.map((item)=>({
+          id: item.id,
+          qtd: item.qtd
+       }))
+
+    const contentApi = await CreateOrder(token, client, table, orderProducts);
     const content = await contentApi.json();
 
-    const orderProducts = {
-      client: info.client,
-      table: info.table,
-      products: orderItems.map((item)=>{
-       const productItems = {
-          id: item.id,
-          name: item.name,
-          price:item.price,
-          flavor: item.flavor,
-          complement:item.complement,
-          qtd: item.qtd,
-       }
-       return productItems
-      })
-    }
     if (contentApi.status !== 200) {
       setError(content.message);
     } else if (contentApi.status === 200){
-      if(info.client == '' || info.table == ''){
-        setError('Preencha o campo cliente')
+      if(client == '' || table == ''){
+        setError('Preencha todos os campos')
       }
      else if(orderItems.length == 0){
         setError('Comanda vazia')
       }
      else{
       setSuccess('Pedido mandado para cozinha');
-      content(orderProducts)
-      .then (() => {
-        Navigate('/order')
-      })
-      .catch((error) => error)
+      // content(orderProducts)
+      // .then (() => {
+      //   Navigate('/order')
+      // })
+      // .catch((error) => error)
       }
       }
   }
@@ -182,8 +177,8 @@ const WaiterMenu = () =>{
                 className="inputOrderContainer"
                 type="text"
                 name="client"
-                value={info.client}
-                onChange={(e)=> {setInfo({...info,[e.target.id]:e.target.value})}}
+                value={client}
+                onChange={(e)=> {setClient(e.target.value)}}
                 />
                 <h1 className='orderClient'>MESA</h1>
                 <Input
@@ -191,12 +186,13 @@ const WaiterMenu = () =>{
                 type="number"
                 name="table"
                 min="0"
-                value={info.table}
-                onChange={(e)=> {setInfo({...info,[e.target.id]:e.target.value})}}
+                value={table}
+                onChange={(e)=> {setTable(e.target.value);console.log(table)}}
                 />
             {orderItems.map((orderProduct, key) => (
               <div className='cardOrder' key={key}>
-                <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd || 1}</h1>
+                <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd}</h1>
+                {console.log(orderProduct.qtd)}
                 <p className='orderFlavor'>{orderProduct.flavor}</p>
                 <p className='orderFlavor'>{orderProduct.complement}</p>
                 <Operator clickFunction={() => removeItemToOrder(orderProduct)} calculator='-' />
