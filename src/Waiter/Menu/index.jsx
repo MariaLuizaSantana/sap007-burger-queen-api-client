@@ -5,7 +5,7 @@ import './menu.css'
 import Operator from '../../Components/operator';
 import Input from '../../Components/input';
 import { AuthGetProduct, CreateOrder } from '../../Service/api';
-import { tab } from '@testing-library/user-event/dist/tab';
+import { Navigate } from 'react-router-dom';
 
 
 const WaiterMenu = () =>{
@@ -15,10 +15,10 @@ const WaiterMenu = () =>{
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('breakfast');
   const [orderItems, setOrderItems] = useState([]);
-  const [client, setClient] = useState('');
-  const [table, setTable] = useState('');
-  // const [id, setId] = useState('');
-  // const [qtd, setQtd] = useState('');
+  const [info, setInfo] = useState({
+    client:'',
+    table:'',
+  })
 
   const token = localStorage.getItem('Token');
 
@@ -100,33 +100,44 @@ const WaiterMenu = () =>{
     }, 0)
   }
 
-  const handleProducts = () => {
+  const handleProducts = async () => {
+    const contentApi = await CreateOrder(token, info);
+    const content = await contentApi.json();
+
     const orderProducts = {
-      client: client,
-      table: table,
+      client: info.client,
+      table: info.table,
       products: orderItems.map((item)=>{
        const productItems = {
-         name: item.name,
-         flavor: item.flavor,
-         complement:item.complement,
-         id: item.id,
-         qtd: item.qtd,
+          id: item.id,
+          name: item.name,
+          price:item.price,
+          flavor: item.flavor,
+          complement:item.complement,
+          qtd: item.qtd,
        }
        return productItems
       })
     }
-    return orderProducts
+    if (contentApi.status !== 200) {
+      setError(content.message);
+    } else if (contentApi.status === 200){
+      if(info.client == '' || info.table == ''){
+        setError('Preencha o campo cliente')
+      }
+     else if(orderItems.length == 0){
+        setError('Comanda vazia')
+      }
+     else{
+      setSuccess('Pedido mandado para cozinha');
+      content(orderProducts)
+      .then (() => {
+        Navigate('/order')
+      })
+      .catch((error) => error)
+      }
+      }
   }
-  
-  // if(client=''){
-  //   setError('Preencha o campo cliente')
-  // }
-  // else if(orderItems.length == 0){
-  //   setError('Comanda vazia')
-  // }
-  // else{
-  //   setSuccess('Pedido mandado para cozinha')
-  // }
 
 
   return (
@@ -171,8 +182,8 @@ const WaiterMenu = () =>{
                 className="inputOrderContainer"
                 type="text"
                 name="client"
-                value={client}
-                onChange={(e)=> {setClient(e.target.value)}}
+                value={info.client}
+                onChange={(e)=> {setInfo({...info,[e.target.id]:e.target.value})}}
                 />
                 <h1 className='orderClient'>MESA</h1>
                 <Input
@@ -180,8 +191,8 @@ const WaiterMenu = () =>{
                 type="number"
                 name="table"
                 min="0"
-                value={table}
-                onChange={(e)=> {setTable(e.target.value)}}
+                value={info.table}
+                onChange={(e)=> {setInfo({...info,[e.target.id]:e.target.value})}}
                 />
             {orderItems.map((orderProduct, key) => (
               <div className='cardOrder' key={key}>
