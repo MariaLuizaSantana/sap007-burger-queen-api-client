@@ -15,10 +15,6 @@ const WaiterMenu = () =>{
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('breakfast');
   const [orderItems, setOrderItems] = useState([]);
-  // const [info, setInfo] = useState({
-  //   client:'',
-  //   table:'',
-  // })
   const [client, setClient] = useState('')
   const [table, setTable] = useState('')
   const token = localStorage.getItem('Token');
@@ -114,24 +110,21 @@ const WaiterMenu = () =>{
     const contentApi = await CreateOrder(token, client, table, orderProducts);
     const content = await contentApi.json();
 
-    if (contentApi.status !== 200) {
-      setError(content.message);
-    } else if (contentApi.status === 200){
-      if(client == '' || table == ''){
-        setError('Preencha todos os campos')
-      }
-     else if(orderItems.length == 0){
-        setError('Comanda vazia')
-      }
-     else{
+    if(client == ''){
+      setError('Preencha o campo do cliente')
+    }
+    else if(table == ''){
+      setError('Preencha o campo da mesa')
+    }
+    else if(orderItems.length == 0){
+      setError('Comanda vazia')
+    }
+    else if(contentApi.status === 200){
       setSuccess('Pedido mandado para cozinha');
-      // content(orderProducts)
-      // .then (() => {
-      //   Navigate('/order')
-      // })
-      // .catch((error) => error)
-      }
-      }
+    }
+    else{
+      setError(content.message)
+    }
   }
 
 
