@@ -5,12 +5,11 @@ import './menu.css'
 import Operator from '../../Components/operator';
 import Input from '../../Components/input';
 import { AuthGetProduct, CreateOrder } from '../../Service/api';
-import { Navigate } from 'react-router-dom';
 
 
 const WaiterMenu = () =>{
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('breakfast');
@@ -21,7 +20,6 @@ const WaiterMenu = () =>{
 
   const getProducts = async () => {
 
-    
     try {
       const contentApi = await AuthGetProduct(token);
       const content = await contentApi.json();
@@ -38,7 +36,6 @@ const WaiterMenu = () =>{
       setError('Erro desconhecido');
     }
   };
-
 
   useEffect(() => {
     getProducts();
