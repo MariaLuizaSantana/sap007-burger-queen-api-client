@@ -104,7 +104,7 @@ const WaiterMenu = () =>{
     const orderProducts = orderItems.map((item)=>({
           id: item.id,
           qtd: item.qtd
-       }))
+       }));
 
     const contentApi = await CreateOrder(token, client, table, orderProducts);
     const content = await contentApi.json();
@@ -177,11 +177,12 @@ const WaiterMenu = () =>{
                 name="table"
                 min="0"
                 value={table}
-                onChange={(e)=> {setTable(e.target.value)}}
+                onChange={(e)=> {setTable(e.target.value);console.log(table)}}
                 />
             {orderItems.map((orderProduct, key) => (
               <div className='cardOrder' key={key}>
-                <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd || 1}</h1>
+                <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd}</h1>
+                {console.log(orderProduct.qtd)}
                 <p className='orderFlavor'>{orderProduct.flavor}</p>
                 <p className='orderFlavor'>{orderProduct.complement}</p>
                 <Operator clickFunction={() => removeItemToOrder(orderProduct)} calculator='-' />
