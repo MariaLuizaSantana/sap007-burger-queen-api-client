@@ -70,7 +70,7 @@ export async function AuthGetProduct (token){
   });
 }
 
-export async function CreateOrder (token, client, table,products){
+export async function CreateOrder (token, client, table, products){
     
   return await fetch('https://lab-api-bq.herokuapp.com/orders', {
     method: 'POST',
