@@ -5,7 +5,6 @@ import './menu.css'
 import Operator from '../../Components/operator';
 import Input from '../../Components/input';
 import { AuthGetProduct, CreateOrder } from '../../Service/api';
-import { Navigate } from 'react-router-dom';
 
 
 const WaiterMenu = () =>{
@@ -105,7 +104,7 @@ const WaiterMenu = () =>{
     const orderProducts = orderItems.map((item)=>({
           id: item.id,
           qtd: item.qtd
-       }))
+       }));
 
     const contentApi = await CreateOrder(token, client, table, orderProducts);
     const content = await contentApi.json();
@@ -126,8 +125,6 @@ const WaiterMenu = () =>{
       setError(content.message)
     }
   }
-
-
   return (
     <WaiterTemplate>
       <h1>CARDÁPIO</h1>
