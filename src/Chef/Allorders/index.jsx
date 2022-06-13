@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChefTemplate from '../chefTemplate';
 import { ListOrder } from '../../Service/api';
-import Button from '../../Components/button';
 
 const ChefAllOrders = () =>{
   const [loading, setLoading] = useState(false);
@@ -9,8 +8,7 @@ const ChefAllOrders = () =>{
   const token = localStorage.getItem('Token');
   const [order, setOrder] = useState([]);
 
-  const handleListAllOrders = async (e) => {
-    e.preventDefault()
+  const handleListAllOrders = async () => {
 
     try {
       const contentApi =  await ListOrder(token);
@@ -21,7 +19,6 @@ const ChefAllOrders = () =>{
       } else {
         if (contentApi.status === 200){
           setOrder(content);
-          console.log(content)
         }
       }
     } catch { 
@@ -30,13 +27,9 @@ const ChefAllOrders = () =>{
     }
   }
 
-  // const allOrders = order.filter((orders) => {
-  //   if (orders.sub_type === filter) {
-  //     return true;
-  //   } else{
-  //     return false;
-  //   }
-  // });
+  useEffect(() => {
+    handleListAllOrders();
+  }, []);
 
   return (
     <ChefTemplate>
@@ -50,9 +43,25 @@ const ChefAllOrders = () =>{
           <h1 className="msgError">{error}</h1>
       )}
 
-      <div>
-        <Button className="buttonLogin" title="Listar Pedidos" onClick={handleListAllOrders} />
-      </div>
+      <section>
+        {order.map((item) => {
+          return (
+            <div className='cardMenu' key={item.id}>
+              <h1 className='productName'>{item.client_name}</h1>
+              <p className='productComplement'>Mesa: {item.table}</p>
+              <div>{item.Products.map((products) => {
+                return (
+                  <div key={`product-${products.id}`}>
+                    <p className='productComplement'>{products.name} x{products.qtd}</p>
+                    <p className='productComplement'>{products.flavor}</p>
+                    <p className='productComplement'>{products.complement}</p>
+                  </div>                    
+              )})}
+              </div>
+              <h1 className='productTotal'>Status: {item.status}</h1>
+            </div>
+          )})}
+        </section>
 
     </ChefTemplate>
   );
