@@ -5,7 +5,6 @@ import './menu.css'
 import Operator from '../../Components/operator';
 import Input from '../../Components/input';
 import { AuthGetProduct, CreateOrder } from '../../Service/api';
-import { tab } from '@testing-library/user-event/dist/tab';
 
 
 const WaiterMenu = () =>{
@@ -15,11 +14,8 @@ const WaiterMenu = () =>{
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('breakfast');
   const [orderItems, setOrderItems] = useState([]);
-  const [client, setClient] = useState('');
-  const [table, setTable] = useState('');
-  // const [id, setId] = useState('');
-  // const [qtd, setQtd] = useState('');
-
+  const [client, setClient] = useState('')
+  const [table, setTable] = useState('')
   const token = localStorage.getItem('Token');
 
   const getProducts = async () => {
@@ -67,7 +63,7 @@ const WaiterMenu = () =>{
         } else {
           return {
             ...orderItem,
-            qtd: (orderItem.qtd || 0) + 1
+            qtd: orderItem.qtd ? orderItem.qtd + 1 :  1
           }
         }
       })
@@ -75,7 +71,10 @@ const WaiterMenu = () =>{
     } else {
       setOrderItems([
         ...orderItems,
-        item,
+        {
+          ...item,
+          qtd:1
+        },
       ]);
     }
   }
@@ -100,35 +99,32 @@ const WaiterMenu = () =>{
     }, 0)
   }
 
-  const handleProducts = () => {
-    const orderProducts = {
-      client: client,
-      table: table,
-      products: orderItems.map((item)=>{
-       const productItems = {
-         name: item.name,
-         flavor: item.flavor,
-         complement:item.complement,
-         id: item.id,
-         qtd: item.qtd,
-       }
-       return productItems
-      })
+  const handleProducts = async () => {
+
+    const orderProducts = orderItems.map((item)=>({
+          id: item.id,
+          qtd: item.qtd
+       }))
+
+    const contentApi = await CreateOrder(token, client, table, orderProducts);
+    const content = await contentApi.json();
+
+    if(client == ''){
+      setError('Preencha o campo do cliente')
     }
-    return orderProducts
+    else if(table == ''){
+      setError('Preencha o campo da mesa')
+    }
+    else if(orderItems.length == 0){
+      setError('Comanda vazia')
+    }
+    else if(contentApi.status === 200){
+      setSuccess('Pedido mandado para cozinha');
+    }
+    else{
+      setError(content.message)
+    }
   }
-  
-  // if(client=''){
-  //   setError('Preencha o campo cliente')
-  // }
-  // else if(orderItems.length == 0){
-  //   setError('Comanda vazia')
-  // }
-  // else{
-  //   setSuccess('Pedido mandado para cozinha')
-  // }
-
-
   return (
     <WaiterTemplate>
       <h1>CARDÁPIO</h1>
