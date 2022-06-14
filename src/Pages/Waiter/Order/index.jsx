@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import WaiterTemplate from '../waiterTemplate';
-import { ListOrder } from '../../Service/api';
+import { ListOrder } from '../../../Service/api';
 import { useEffect } from 'react';
-import Button from '../../Components/button';
+import Button from '../../../Components/button';
 
 const WaiterOrder = () =>{
   const [loading, setLoading] = useState(false);
@@ -10,7 +10,6 @@ const WaiterOrder = () =>{
   const [error, setError] = useState(false);
   const [filter, setFilter] = useState('status');
   const [order, setOrder] = useState([]);
-  const [products, setProducts] = useState([]);
 
   const token = localStorage.getItem('Token');
 
@@ -43,9 +42,6 @@ const WaiterOrder = () =>{
       return false;
     }
   });
-
-
-  orderFilter.map(item => console.log(item))
 
   return (
     <WaiterTemplate>

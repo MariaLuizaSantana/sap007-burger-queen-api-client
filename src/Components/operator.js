@@ -5,8 +5,7 @@ function Operator (props){
         <button
             className = 'operatorSumMenu'
             onClick={props.clickFunction}>{props.calculator}
-
-         </button>
+        </button>
     )
 }
 

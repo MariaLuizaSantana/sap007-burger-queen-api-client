@@ -6,7 +6,6 @@ const Input = ({ min, className, type, placeholder, name, icon, onChange}) => (
     <div className="inputLoginIcon">
       {icon}
     </div>
-
     <input
       className={className}
       type={type}
@@ -17,7 +16,6 @@ const Input = ({ min, className, type, placeholder, name, icon, onChange}) => (
     />
   </div>
 );
-
 Input.defaultProps = {
   className: 'inputLogin'
 };

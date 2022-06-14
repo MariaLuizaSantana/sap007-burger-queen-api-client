@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import WaiterTemplate from '../waiterTemplate';
-import Button from '../../Components/button';
+import Button from '../../../Components/button';
 import './menu.css'
-import Operator from '../../Components/operator';
-import Input from '../../Components/input';
-import { AuthGetProduct, CreateOrder } from '../../Service/api';
+import Operator from '../../../Components/operator';
+import Input from '../../../Components/input';
+import { AuthGetProduct, CreateOrder } from '../../../Service/api';
 
 
 const WaiterMenu = () =>{
@@ -19,19 +19,18 @@ const WaiterMenu = () =>{
   const token = localStorage.getItem('Token');
 
   const getProducts = async () => {
-
     try {
       const contentApi = await AuthGetProduct(token);
       const content = await contentApi.json();
 
       if (contentApi.status !== 200) {
         setError(content.message);
-      } else {
+      }else {
         if (contentApi.status === 200){
           setProducts(content);
         }
       }
-    } catch (e) {
+    }catch (e) {
       setLoading(false);
       setError('Erro desconhecido');
     }
@@ -53,7 +52,6 @@ const WaiterMenu = () =>{
     const found = orderItems.find((foundItem) => {
       return foundItem.id === item.id
     })
-    
     if (found) {
       const newOrder = orderItems.map((orderItem) => {
         if (found.id !== orderItem.id) {
@@ -98,12 +96,10 @@ const WaiterMenu = () =>{
   }
 
   const handleProducts = async () => {
-
     const orderProducts = orderItems.map((item)=>({
-          id: item.id,
-          qtd: item.qtd
-       }));
-
+      id: item.id,
+      qtd: item.qtd
+    }));
     const contentApi = await CreateOrder(token, client, table, orderProducts);
     const content = await contentApi.json();
 
@@ -125,26 +121,24 @@ const WaiterMenu = () =>{
   }
   return (
     <WaiterTemplate>
-      <h1>CARDÁPIO</h1>
-        
-        {Boolean(loading) && (
-          <i className="ph-spinner">Carregando</i>
-        )}
-
-        {Boolean(error) && (
-          <h1 className="msgError">{error}</h1>
-        )}
-        {Boolean(success) && (
-          <h1 className="msgSuccess">{success}</h1>
-        )}
-        <div className='btnMenu'>
-          <Button className="buttonLogin buttonOrder" title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
-          <Button className="buttonLogin buttonOrder" title="Lanches" onClick={() => setFilter('hamburguer')} />
-          <Button className="buttonLogin buttonOrder" title="Acompanhamentos" onClick={() => setFilter('side')} />
-          <Button className="buttonLogin buttonOrder" title="Bebidas" onClick={() => setFilter('drinks')} />
-        </div>
-        <div className='tela-menu'>
-          <section className='productsMenu'>
+      <h1>CARDÁPIO</h1>  
+      {Boolean(loading) && (
+        <i className="ph-spinner">Carregando</i>
+      )}
+      {Boolean(error) && (
+        <h1 className="msgError">{error}</h1>
+      )}
+      {Boolean(success) && (
+        <h1 className="msgSuccess">{success}</h1>
+      )}
+      <div className='btnMenu'>
+        <Button className="buttonLogin buttonOrder" title="Café da Manhã" onClick={() => setFilter('breakfast')}/>
+        <Button className="buttonLogin buttonOrder" title="Lanches" onClick={() => setFilter('hamburguer')} />
+        <Button className="buttonLogin buttonOrder" title="Acompanhamentos" onClick={() => setFilter('side')} />
+        <Button className="buttonLogin buttonOrder" title="Bebidas" onClick={() => setFilter('drinks')} />
+      </div>
+      <div className='tela-menu'>
+        <section className='productsMenu'>
           {productsFilter.map((product) => (
             <div className='cardMenu' key={product.id}>
               <h1 className='productName'>{product.name}</h1>
@@ -157,41 +151,40 @@ const WaiterMenu = () =>{
               </div>
             </div>
           ))}
-          </section>
-            <section className='productsOrder'>
-                <h1 className='productName'>PEDIDO</h1>
-                <h1 className='orderClient'>CLIENTE</h1>
-                <Input
-                className="inputOrderContainer"
-                type="text"
-                name="client"
-                value={client}
-                onChange={(e)=> {setClient(e.target.value)}}
-                />
-                <h1 className='orderClient'>MESA</h1>
-                <Input
-                className="inputOrderContainer"
-                type="number"
-                name="table"
-                min="0"
-                value={table}
-                onChange={(e)=> {setTable(e.target.value);console.log(table)}}
-                />
+        </section>
+        <section className='productsOrder'>
+          <h1 className='productName'>PEDIDO</h1>
+          <h1 className='orderClient'>CLIENTE</h1>
+          <Input
+            className="inputOrderContainer"
+            type="text"
+            name="client"
+            value={client}
+            onChange={(e)=> {setClient(e.target.value)}}
+          />
+          <h1 className='orderClient'>MESA</h1>
+          <Input
+            className="inputOrderContainer"
+            type="number"
+            name="table"
+            min="0"
+            value={table}
+            onChange={(e)=> setTable(e.target.value)}
+          />
             {orderItems.map((orderProduct, key) => (
               <div className='cardOrder' key={key}>
                 <h1 className='orderName'>{orderProduct.name} x{orderProduct.qtd}</h1>
-                {console.log(orderProduct.qtd)}
                 <p className='orderFlavor'>{orderProduct.flavor}</p>
                 <p className='orderFlavor'>{orderProduct.complement}</p>
-                <Operator clickFunction={() => removeItemToOrder(orderProduct)} calculator='-' />
+                <Operator clickFunction={() => removeItemToOrder(orderProduct)} calculator='-'/>
               </div>
             ))}
-              <h1 className='productTotal'>{`TOTAL: R$${sumPrice()},00`}</h1>
-            </section>
-            <div>
-              <Button className="buttonLogin sendOrder" title="ENVIAR PEDIDO" onClick={handleProducts} />
-            </div>
+            <h1 className='productTotal'>{`TOTAL: R$${sumPrice()},00`}</h1>
+        </section>
+        <div>
+          <Button className="buttonLogin sendOrder" title="ENVIAR PEDIDO" onClick={handleProducts} />
         </div>
+      </div>
     </WaiterTemplate>
   );
 }

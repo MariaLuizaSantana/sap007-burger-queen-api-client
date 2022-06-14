@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from'../img/logo_bq.png';
+import logo from '../../img/logo_bq.png';
 import './login.css';
-import '../Style.css';
-import Input from '../Components/input';
-import Button from '../Components/button';
-import Footer from '../Components/footer';
-import { AuthUser } from '../Service/api';
+import Input from '../../Components/input';
+import Button from '../../Components/button';
+import Footer from '../../Components/footer';
+import { AuthUser } from '../../Service/api';
 
 const Login = () => {
   
@@ -21,10 +20,7 @@ const Login = () => {
 
     try {
       const contentApi =  await AuthUser(email, password)
-      console.log(contentApi);
       const content = await contentApi.json();
-      console.log(content);
-
 
       if (contentApi.status !== 200) {
         setError(content.message);
@@ -40,7 +36,6 @@ const Login = () => {
         }
     }
     localStorage.setItem('Token', content.token);
-    console.log(content.token)
     } catch { 
       setLoading(false);
       setError('Erro desconhecido');

@@ -2,11 +2,8 @@ import React, { useState } from 'react'
 import Operator from './operator'
 
 function OperatorSub (){
-    
     const [counter, setCounter] = useState(0)
-
     function decrement(){
-        console.log('diminui')
         setCounter(counter - 1)
     }
     return(
