@@ -1,7 +1,7 @@
 import React from 'react';
 import './select.css';
 
-const Select = ({onChange}) => (
+const Select = (onChange) => (
     <select onChange={onChange} className='selectLogin' name='role'>
         <option value="">Selecione o cargo</option>
         <option value="admin">Administração</option>

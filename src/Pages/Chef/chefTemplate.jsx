@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './chefTemplate.css';
 import logo from '../../img/logo_bq.png';
 
-const ChefTemplate = ({ children }) =>{
+const ChefTemplate = (children) =>{
   return (
     <div className="conteudo-admin">  
       <nav className="menu-admin">

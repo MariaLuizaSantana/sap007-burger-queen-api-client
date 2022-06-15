@@ -22,6 +22,7 @@ const WaiterOrder = () =>{
         setError(content.message);
       } else {
         if (contentApi.status === 200){
+          setSuccess(false);
           setOrder(content);
         }
       }
@@ -71,7 +72,7 @@ const WaiterOrder = () =>{
               <h1 className='productName'>{order.client_name}</h1>
               <div>{order.Products.map((products) => {
                 return (
-                  <div>
+                  <div key={products.id}>
                     <p className='productComplement'>{products.name}</p>
                     <p className='productComplement'>{products.flavor}</p>
                     <p className='productComplement'>{products.complement}</p>
