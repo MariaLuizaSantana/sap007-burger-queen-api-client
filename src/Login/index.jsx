@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from'../img/logo_bq.png';
+import logo from '../img/logo_bq.png';
 import './login.css';
 import '../Style.css';
 import Input from '../Components/input';
@@ -9,7 +9,6 @@ import Footer from '../Components/footer';
 import { AuthUser } from '../Service/api';
 
 const Login = () => {
-  
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -17,35 +16,28 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      const contentApi =  await AuthUser(email, password)
-      console.log(contentApi);
+      const contentApi = await AuthUser(email, password);
       const content = await contentApi.json();
-      console.log(content);
-
 
       if (contentApi.status !== 200) {
         setError(content.message);
-    } else {
-        if (content.role === 'waiter') {
-            navigate('/waiter');
-        } else if (content.role === 'chef') {
-            navigate('/chef');
-        } else if (content.role === 'admin') {
-            navigate('/admin');
-        } else {
-            navigate('/not-found');
-        }
-    }
-    localStorage.setItem('Token', content.token);
-    console.log(content.token)
-    } catch { 
+      } else if (content.role === 'waiter') {
+        navigate('/waiter');
+      } else if (content.role === 'chef') {
+        navigate('/chef');
+      } else if (content.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/not-found');
+      } localStorage.setItem('Token', content.token);
+    } catch {
       setLoading(false);
       setError('Erro desconhecido');
     }
-  } 
+  };
 
   return (
     <div className="App">
@@ -70,9 +62,9 @@ const Login = () => {
               type="email"
               placeholder="Digite seu e-mail"
               name="email"
-              icon={<i className="ph-envelope"></i>}
+              icon={<i className="ph-envelope" />}
               value={email}
-              onChange={(e)=> {setEmail(e.target.value)}}
+              onChange={(e) => { setEmail(e.target.value); }}
             />
           </div>
           <div className="infoLogin">
@@ -81,17 +73,17 @@ const Login = () => {
               type="password"
               placeholder="Digite sua senha"
               name="password"
-              icon={<i className="ph-lock-key"></i>}
+              icon={<i className="ph-lock-key" />}
               value={password}
-              onChange={(e)=> {setPassword(e.target.value)}}
+              onChange={(e) => { setPassword(e.target.value); }}
             />
           </div>
-          <Button title="ENTRAR" onClick={handleLogin}/>
+          <Button title="ENTRAR" onClick={handleLogin} />
         </form>
       </header>
       <Footer />
     </div>
   );
-}
+};
 
 export default Login;

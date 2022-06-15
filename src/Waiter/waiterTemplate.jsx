@@ -1,36 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './waiterTemplate.css';
-import logo from'../img/logo_bq.png';
+import logo from '../img/logo_bq.png';
 
-const WaiterTemplate = ({ children }) =>{
-  return (
-    <div className="conteudo-admin">  
-        <nav className="menu-admin">
-          <p>ATENDIMENTO</p>
-          <ul>
-          <li>
+const WaiterTemplate = ({ children }) => (
+  <div className="conteudo-admin">
+    <nav className="menu-admin">
+      <p>ATENDIMENTO</p>
+      <ul>
+        <li>
           <Link to="/waiter">Início</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/menu">Cardápio</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/order">Pedidos</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/" className="ph-sign-out">Sair</Link>
-          </li>
-          </ul>
-        </nav>
+        </li>
+      </ul>
+    </nav>
 
-        <div className="interno-admin">
-          <img src={logo} className="App-logo" alt="logo" />
+    <div className="interno-admin">
+      <img src={logo} className="App-logo" alt="logo" />
 
-          {children}
-        </div>
+      {children}
     </div>
-  );
-}
+  </div>
+);
 
 export default WaiterTemplate;

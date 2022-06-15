@@ -1,42 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './adminTemplate.css';
-import logo from'../img/logo_bq.png';
+import logo from '../img/logo_bq.png';
 
-const AdminTemplate = ({ children }) =>{
-  return (
-    <div className="conteudo-admin">  
-        <nav className="menu-admin">
-          <p>SISTEMA ADMINISTRATIVO</p>
-          <ul>
-          <li>
+const AdminTemplate = ({ children }) => (
+  <div className="conteudo-admin">
+    <nav className="menu-admin">
+      <p>SISTEMA ADMINISTRATIVO</p>
+      <ul>
+        <li>
           <Link to="/admin">Início</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/list-users">Lista de Usuários</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/create-user">Criar Usuário</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/update-user">Atualizar Usuário</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/delete-user">Deletar Usuário</Link>
-          </li>
-          <li>
+        </li>
+        <li>
           <Link to="/" className="ph-sign-out">Sair</Link>
-          </li>
-          </ul>
-        </nav>
+        </li>
+      </ul>
+    </nav>
 
-        <div className="interno-admin">
-          <img src={logo} className="App-logo" alt="logo" />
+    <div className="interno-admin">
+      <img src={logo} className="App-logo" alt="logo" />
 
-          {children}
-        </div>
+      {children}
     </div>
-  );
-}
+  </div>
+);
 
 export default AdminTemplate;

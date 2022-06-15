@@ -1,18 +1,21 @@
 import React from 'react';
 import './button.css';
 
-const Button = ({ className, title, onClick }) => (
+const Button = ({
+  className, title, onClick,
+}) => (
 
-    <button
-      className={className}
-      onClick={onClick}
-    >
-      {title}
-    </button>
-  );
+  <button
+    type="submit"
+    className={className}
+    onClick={onClick}
+  >
+    {title}
+  </button>
+);
 
 Button.defaultProps = {
-  className: 'buttonLogin'
+  className: 'buttonLogin',
 };
-  
+
 export default Button;

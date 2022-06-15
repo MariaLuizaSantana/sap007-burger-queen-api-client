@@ -1,13 +1,13 @@
-import './operator.css'
+import React from 'react';
+import './operator.css';
 
-function Operator (props){
-    return(
-        <button
-            className = 'operatorSumMenu'
-            onClick={props.clickFunction}>{props.calculator}
+const Operator = (props) => (
+  <button
+    className="operatorSumMenu"
+    onClick={props.clickFunction}
+  >
+    {props.calculator}
+  </button>
+);
 
-         </button>
-    )
-}
-
-export default Operator
+export default Operator;
