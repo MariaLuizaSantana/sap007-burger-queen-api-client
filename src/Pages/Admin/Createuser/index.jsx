@@ -21,16 +21,16 @@ const CreateUser = () =>{
       const contentApi = await CreateNewUser(name, email, password, role)
       const content = await contentApi.json()
 
-      if ( name == '') {
+      if ( name === '') {
         setError('Preencha o campo do nome');
       }
-      else if (email == ''){
+      else if (email === ''){
         setError('Preencha o campo de email');
       }
-      else if (password == ''){
+      else if (password === ''){
         setError('Preencha o campo da senha')
       }
-      else if (role == ''){
+      else if (role === ''){
         setError('Preencha o campo do cargo');
       }
       else if(contentApi.status === 200){

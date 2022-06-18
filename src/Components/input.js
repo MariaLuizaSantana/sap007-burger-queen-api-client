@@ -1,7 +1,9 @@
 import React from 'react';
 import './input.css';
 
-const Input = ( min, className, type, placeholder, name, icon, onChange) => (
+const Input = ({
+  min, className, type, placeholder, name, icon, onChange,
+}) => (
   <div className="inputLoginContainer">
     <div className="inputLoginIcon">
       {icon}
@@ -17,7 +19,7 @@ const Input = ( min, className, type, placeholder, name, icon, onChange) => (
   </div>
 );
 Input.defaultProps = {
-  className: 'inputLogin'
+  className: 'inputLogin',
 };
 
 export default Input;

@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, BrowserRouter, Routes as RoutesDOM } from "react-router-dom";
+import React from 'react';
+import { Route, BrowserRouter, Routes as RoutesDOM } from 'react-router-dom';
 
 import Login from "./Pages/Login";
 import Waiter from "./Pages/Waiter";

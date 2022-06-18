@@ -5,7 +5,7 @@ import Button from '../../../Components/button';
 import Select from '../../../Components/select';
 import { AuthUpdateUser } from '../../../Service/api';
 
-const UpdateUser = () =>{
+const UpdateUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -19,18 +19,15 @@ const UpdateUser = () =>{
     e.preventDefault();
 
     try {
-      const contentApi = await AuthUpdateUser(uid,token,name,role);
+      const contentApi = await AuthUpdateUser(uid, token, name, role);
       const content = await contentApi.json();
 
       if (contentApi.status !== 200) {
         setError(content.message);
+      } else if (contentApi.status === 200) {
+        setSuccess('Usuário atualizado com sucesso!');
       }
-      else {
-        if (contentApi.status === 200){
-          setSuccess('Usuário atualizado com sucesso!');
-        }
-      }
-    }catch (e) {
+    } catch {
       setLoading(false);
       setError('Erro desconhecido');
     }
@@ -51,29 +48,29 @@ const UpdateUser = () =>{
         <div className="infoLogin">
           <h1>ID do Funcionário</h1>
           <Input
-            className='inputLogin'
+            className="inputLogin"
             type="text"
             placeholder="Número de identificação do funcionário"
             name="uid"
-            icon={<i className="ph-circle-wavy-check"></i>}
+            icon={<i className="ph-circle-wavy-check" />}
             value={uid}
-            onChange={(e)=>{setUid(e.target.value)}}
+            onChange={(e) => { setUid(e.target.value); }}
           />
         </div>
         <div className="infoLogin">
           <h1>Nome do Funcionário</h1>
           <Input
-            className='inputLogin'
+            className="inputLogin"
             type="text"
             placeholder="Novo nome do funcionário"
             name="name"
-            icon={<i className="ph-user"></i>}
+            icon={<i className="ph-user" />}
             value={name}
-            onChange={(e)=> {setName(e.target.value)}}
+            onChange={(e) => { setName(e.target.value); }}
           />
         </div>
-        <Select value={role} onChange={(e)=> setRole(e.target.value)} />
-        <Button title="ATUALIZAR" onClick={onUpdate}/>
+        <Select value={role} onChange={(e) => setRole(e.target.value)} />
+        <Button title="ATUALIZAR" onClick={onUpdate} />
       </form>
     </AdminTemplate>
   );
