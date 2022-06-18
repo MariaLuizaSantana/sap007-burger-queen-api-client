@@ -62,7 +62,7 @@ const WaiterOrder = () => {
             <h1 className="productName">{orders.client_name}</h1>
             <div>
               {orders.Products.map((products) => (
-                <div>
+                <div key={products.id}>
                   <p className="productComplement">{products.name}</p>
                   <p className="productComplement">{products.flavor}</p>
                   <p className="productComplement">{products.complement}</p>
