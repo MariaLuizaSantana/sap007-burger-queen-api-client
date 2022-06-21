@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import WaiterTemplate from '../waiterTemplate';
-import { ListOrder } from '../../Service/api';
-import Button from '../../Components/button';
+import { ListOrder } from '../../../Service/api';
+import Button from '../../../Components/button';
 
 const WaiterOrder = () => {
   const [loading, setLoading] = useState(false);
@@ -62,7 +62,7 @@ const WaiterOrder = () => {
             <h1 className="productName">{orders.client_name}</h1>
             <div>
               {orders.Products.map((products) => (
-                <div>
+                <div key={products.id}>
                   <p className="productComplement">{products.name}</p>
                   <p className="productComplement">{products.flavor}</p>
                   <p className="productComplement">{products.complement}</p>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import WaiterTemplate from '../waiterTemplate';
-import Button from '../../Components/button';
-import './menu.css';
-import Operator from '../../Components/operator';
-import Input from '../../Components/input';
-import { AuthGetProduct, CreateOrder } from '../../Service/api';
+import Button from '../../../Components/button';
+import './menu.css'
+import Operator from '../../../Components/operator';
+import Input from '../../../Components/input';
+import { AuthGetProduct, CreateOrder } from '../../../Service/api';
 
 const WaiterMenu = () => {
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const WaiterMenu = () => {
       } else if (contentApi.status === 200) {
         setProducts(content);
       }
-    } catch (e) {
+    }catch (e) {
       setLoading(false);
       setError('Erro desconhecido');
     }

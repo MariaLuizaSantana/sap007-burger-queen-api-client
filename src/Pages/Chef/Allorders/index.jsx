@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ChefTemplate from '../chefTemplate';
-import { ListOrder } from '../../Service/api';
+import { ListOrder } from '../../../Service/api';
 
 const ChefAllOrders = () => {
   const [loading, setLoading] = useState(false);
@@ -31,15 +31,12 @@ const ChefAllOrders = () => {
   return (
     <ChefTemplate>
       <p>Todos os Pedidos</p>
-
       {Boolean(loading) && (
         <i className="ph-spinner">Carregando</i>
       )}
-
       {Boolean(error) && (
         <h1 className="msgError">{error}</h1>
       )}
-
       <section>
         {order.map((item) => (
           <div className="cardMenu" key={item.id}>

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../img/logo_bq.png';
+import logo from '../../img/logo_bq.png';
 import './login.css';
-import '../Style.css';
-import Input from '../Components/input';
-import Button from '../Components/button';
-import Footer from '../Components/footer';
-import { AuthUser } from '../Service/api';
+import Input from '../../Components/input';
+import Button from '../../Components/button';
+import Footer from '../../Components/footer';
+import { AuthUser } from '../../Service/api';
 
 const Login = () => {
   const navigate = useNavigate();
